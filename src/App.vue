@@ -15,6 +15,7 @@ import {watch,computed} from 'vue'
 export default {
   components: { theBlock },
   setup(){
+    console.log(0)
     const store = useStore()
     store.dispatch(`randomise`)
     const randArr=store.getters.getRandArr
