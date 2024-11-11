@@ -11,11 +11,10 @@
 <script>
 import theBlock from "./block.vue";
 import {useStore} from 'vuex'
-import {watch,computed} from 'vue'
+import {ref,watch,computed} from 'vue'
 export default {
   components: { theBlock },
   setup(){
-    console.log(0)
     const store = useStore()
     store.dispatch(`randomise`)
     const randArr=store.getters.getRandArr
@@ -41,8 +40,8 @@ export default {
 }
 .innerGameSpace {
   position: absolute;
-  width: 95%;
   aspect-ratio: 1 / 1;
+  height: 95%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -54,8 +53,10 @@ export default {
 .outerGameSpace {
   position: absolute;
   position: relative;
-  width: 65%;
   aspect-ratio: 1 / 1;
+  height: fit-content;
+  max-height: 85%;
+  max-width: 85%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
