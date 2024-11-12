@@ -17,11 +17,11 @@ export default {
   props: [`number`],
   setup(props) {
     const block = ref(null);
-    const router = useStore();
+    const store = useStore();
 
     function move(){
       if (props.number.value !== 0) {
-        router.dispatch(`move`, {item:props.number,block:block.value});
+        store.dispatch(`move`, {item:props.number,block:block.value});
       }
     }
 

@@ -1,35 +1,36 @@
 <template>
-  <div class="mainBody">
-    <div class="outerGameSpace">
-      <div class="innerGameSpace">
-        <theBlock v-for="number in randArr" :key="number*Math.random()" :number="number"></theBlock>
+  <commonBG>
+    <template #body>
+      <div class="mainBody">
+        <div class="outerGameSpace">
+          <div class="innerGameSpace">
+            <theBlock
+              v-for="number in randArr"
+              :key="number * Math.random()"
+              :number="number"
+            ></theBlock>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </commonBG>
 </template>
 
 <script>
 import theBlock from "./block.vue";
-import {useStore} from 'vuex'
-import {ref,watch,computed} from 'vue'
+import commonBG from "./commonBG.vue";
+import { useStore } from "vuex";
 export default {
-  components: { theBlock },
-  setup(){
-    const store = useStore()
-    store.dispatch(`randomise`)
-    const randArr=store.getters.getRandArr
-    const win =computed(()=>store.getters.getIsWin)
-  
-    watch(win,(value)=>{
-      if(value){
-        console.log(`win`)
-      }
-    })
-    
-    return{
-      randArr
-    }
-  }
+  components: { theBlock, commonBG },
+  setup() {
+    const store = useStore();
+    store.dispatch(`randomise`);
+    const randArr = store.getters.getRandArr;
+
+    return {
+      randArr,
+    };
+  },
 };
 </script>
 

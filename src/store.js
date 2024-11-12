@@ -1,26 +1,47 @@
 import { createStore } from "vuex";
 export default createStore({
   state: {
-    randArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0],
-    isWin: false,
+    randArr: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0],
+    ended: false,
+    result:`win`,
+    score:0
   },
   getters: {
     getRandArr(state) {
       return state.randArr;
     },
-    getIsWin(state) {
-      return state.isWin;
+    isEnded(state) {
+      return state.ended;
     },
+    getResult(state){
+      return state.result
+    },
+    getScore(state){
+      return state.score
+    }
   },
   mutations: {
     randomise(state) {
-      for(let i=0; i<30; i++ ){
-        const randOne=Math.floor(Math.random()*16)
-        const randTwo=Math.floor(Math.random()*16)
-        const temp=state.randArr[randOne]
-        state.randArr[randOne]=state.randArr[randTwo]
-        state.randArr[randTwo]=temp
+      function rand(){
+          for(let i=0; i<30; i++ ){
+          const randOne=Math.floor(Math.random()*16)
+          const randTwo=Math.floor(Math.random()*16)
+          const temp=state.randArr[randOne]
+          state.randArr[randOne]=state.randArr[randTwo]
+          state.randArr[randTwo]=temp
+        }
+        const reduced=state.randArr.reduce((acc,i,ind)=>{
+          state.randArr.slice(ind+1).forEach((item)=>{
+            if(item<i&&i!==0&&item!==0){
+              acc++}
+          })
+          return acc
+        },0)
+        if(reduced%2===Math.floor(state.randArr.indexOf(0)/4)%2){
+         rand()
+        }
       }
+      rand()
     },
     move(state, data) {
       const arr = state.randArr;
@@ -45,17 +66,17 @@ export default createStore({
           arr[indexOfItem] = 0;
           arr[indexOfZero] = data.item;
 
-          let win = true;
+          let condition = true;
           for (let i in state.randArr) {
             if (i == 15) {
               continue;
             }
             if (i != state.randArr[i] - 1) {
-              win = false;
+              condition = false;
               break;
             }
           }
-          state.isWin = win;
+          state.ended = condition;
         }, 200);
       }
     },
