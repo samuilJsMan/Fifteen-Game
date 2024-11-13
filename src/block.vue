@@ -37,7 +37,7 @@ export default {
 .block {
   height: 100%;
   width: 100%;
-  border-radius: 15px;
+  border-radius: 10%;
   position: relative;
   border: 1px solid black;
   transition: transform 0.2s;

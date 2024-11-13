@@ -15,7 +15,18 @@
           <div class="score" ref="scoreRef">*Score there*</div>
         </div>
       </div>
+      <div class="info_button" @click="showInfo = true"></div>
       <div class="settings_button" @click="showSettings"></div>
+      <div
+        class="info-backdrop"
+        @click="showInfo = false"
+        v-if="showInfo"
+      ></div>
+      <transition>
+        <div class="info" v-if="showInfo">
+          <slot name="info"></slot>
+        </div>
+      </transition>
       <div class="settings_screen" @click="hideSettings" ref="settingsScreen">
         <div class="settings_screen_menue" @click.stop>
           <div class="delete_score" @click="forDelete">Delete score</div>
@@ -49,10 +60,13 @@ export default {
     const score = computed(() => store.getters.getScore);
     const text = ref(null);
     const endScreen = ref(null);
-    const scoreRef=ref(null)
+    const scoreRef = ref(null);
+    const showInfo = ref(false);
 
     watch(ended, () => {
-      if(ended.value===false){return}
+      if (ended.value === false) {
+        return;
+      }
       text.value.innerHTML = result.value;
       if (localStorage.records < score) {
         localStorage.setItem(`records`, score.value);
@@ -138,12 +152,36 @@ export default {
       text,
       endScreen,
       scoreRef,
+      showInfo,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.v-enter-from{
+  opacity: 0;
+}
+
+.v-leave-to{
+  opacity: 0;
+}
+
+.v-enter-to{
+  opacity: 1;
+}
+
+.v-leave-from{
+  opacity: 1;
+}
+
+.v-enter-active{
+  transition: opacity 0.4s;
+}
+
+.v-leave-active{
+  transition: opacity 0.4s;
+}
 .body {
   height: 100%;
 }
@@ -181,6 +219,25 @@ body {
   .wrapper {
     width: 100%;
     height: 100%;
+    position: relative;
+    .info {
+      position: absolute;
+      top: 40px;
+      right: 90px;
+      height: fit-content;
+      width: fit-content;
+      padding: 5px;
+      background: rgba(255, 255, 255,0.5);
+      border: 1px solid black;
+      border-radius: 10px 0 10px 10px;
+    }
+    .info-backdrop {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
     .endScreen {
       visibility: hidden;
       transition-property: opacity;
@@ -230,6 +287,25 @@ body {
   }
   .settings_button:hover {
     transform: rotate(90deg);
+    opacity: 1;
+  }
+  .info_button {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    background-image: url("https://t4.ftcdn.net/jpg/02/81/19/31/240_F_281193138_h1GS7sfJ3WuOngca5soMRZETJXTmDeJk.jpg");
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 50%;
+    position: absolute;
+    opacity: 0.2;
+    top: 10px;
+    right: 55px;
+    transition: 0.5s;
+  }
+  .info_button:hover {
+    transform: rotate(360deg);
     opacity: 1;
   }
   .settings_screen {
@@ -299,81 +375,6 @@ body {
         transition-property: opacity;
       }
       .BG:hover {
-        opacity: 1;
-      }
-      .colorBlock {
-        display: flex;
-        justify-content: space-between;
-        height: 50px;
-        width: 100%;
-        margin-top: 10px;
-        position: relative;
-        .colorBlock1 {
-          background: rgb(82, 211, 142);
-          opacity: 0.8;
-        }
-        .colorBlock2 {
-          background: rgb(242, 214, 172);
-          opacity: 0.8;
-        }
-        .colorBlock3 {
-          background: rgb(86, 204, 242);
-          opacity: 0.8;
-        }
-        .colorBlock4 {
-          background: rgb(242, 214, 172);
-          opacity: 0.8;
-        }
-        .colorBlock5 {
-          background: rgb(235, 99, 192);
-          opacity: 0.8;
-        }
-
-        .colorBlock1::before {
-          content: "";
-          background: rgb(15, 105, 189);
-          left: 25px;
-        }
-        .colorBlock2::before {
-          content: "";
-          background: rgb(234, 84, 85);
-          left: 85px;
-        }
-        .colorBlock3::before {
-          content: "";
-          background: rgb(20, 75, 204);
-          left: 145px;
-        }
-        .colorBlock4::before {
-          content: "";
-          background: rgb(247, 107, 28);
-          left: 205px;
-        }
-        .colorBlock5::before {
-          content: "";
-          background: rgb(201, 34, 48);
-          left: 265px;
-        }
-        .CB {
-          height: 50px;
-          width: 50px;
-          border-radius: 10px;
-          transition: 0.5s;
-          transition-property: opacity;
-        }
-        ::before {
-          width: 20px;
-          height: 20px;
-          border-radius: 7px;
-          top: 5px;
-          position: absolute;
-        }
-        .chosen {
-          border: 3px solid rgba(145, 230, 76, 1);
-          opacity: 1;
-        }
-      }
-      .colorBlock *:hover {
         opacity: 1;
       }
       .more {
