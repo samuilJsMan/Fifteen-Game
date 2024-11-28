@@ -53,6 +53,7 @@ export default createStore({
         arr[indexOfItem - 4] === 0 ||
         arr[indexOfItem + 4] === 0
       ) {
+        state.score++
         if(arr[indexOfItem - 1] === 0){
           data.block.style.transform=`translate(-118%,0)`
         }else if(arr[indexOfItem + 1] === 0){
